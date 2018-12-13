@@ -49,25 +49,79 @@ $json = '[
             "productId":6,
 			"imageUrl":"/productImages/product_img6.png",
 			"rank":	[
-						{"userNum":"A100016","userName":"XXXX1公司","orderSum":25,"moneyCnt":100},
+						{"userNum":"A100016","userName":"XXXX1公司","orderSum":25,"moneyCnt":80},
 						{"userNum":"A100017","userName":"XXXX2公司","orderSum":12,"moneyCnt":90},
-						{"userNum":"A100018","userName":"XXXX3公司","orderSum":2,"moneyCnt":80}
+						{"userNum":"A100018","userName":"XXXX3公司","orderSum":2,"moneyCnt":100}
 					]
 		}
 	]';
+$a=[];
 $arr = [];
+$array = [];
+$arr_1 = [];
 $arr = json_decode($json, true);
-echo '<pre>';
-function get_money($rank)
-{   $coll = [];
-    foreach ($rank as $k=>$val) {
-        $coll [] = $val['moneyCnt'];
-    }
-    return $coll;
+$list = [];
+foreach ($arr as $key => $value)
+{
+   $list[$value['productId']] = get_rank_money($value['rank']);
 }
- foreach ($arr as $key =>$value) {
-     $arr[$key]['coll'] = get_money($value['rank']);
- }
- var_dump($arr);
+
+function get_rank_money($rank)
+{
+    $arr = [];
+    foreach ($rank as $item)
+    {
+        array_push($arr, $item['moneyCnt']);
+    }
+    return $arr;
+}
+print_r($list);
+exit();
+
+/////////
+echo '<pre>';
+foreach ($arr as $key=>$value) {
+    foreach ($value['rank'] as $k =>$val) {
+            array_push($array, $value['rank'][$k]['moneyCnt']
+            );
+        }
+}
+function get_product_id($arr)
+{
+    $arr_id = [];
+    foreach ($arr as $key => $value) {
+       array_push($arr_id, $value['productId']);
+    }
+    return$arr_id;
+}
+
+function compare_arrs($arr,$arrs)
+{
+    $arrr = [];
+foreach ($arrs as $key =>$value) {
+    if (count(array_diff($arr, $value)) == 0) {
+    array_push($arrr,$key);
+    }
+}
+return $arrr;
+}
+$arr_1 = array_chunk($array,3);
+$vv=get_product_id($arr);
+$arr_1 = array_combine ($vv, $arr_1);
+$temp = $arr_1;
+$list = [];
+foreach ($arr_1 as $kk => $val) {
+    unset($temp[$kk]);
+    print_r($temp);
+   array_push($list, compare_arrs($val, $temp));
+}
+exit;
+print_r($list);
+$arr_ids = get_firsts($a,$arr_1);
+print_r($arr_ids);
+
+//var_dump($array);
+
+//var_dump($array);
 //5, 查找出这个对象中rank下三组moneyCnt完全相同的两个元素，并将两个的id，返回为一个数组。
 //$arr[]['rank'] []['moneyCnt']  $arr[]['productId']

@@ -201,7 +201,7 @@ function get_user_replies($name,$arr) {
     foreach ($arr as $key =>$value) {
         foreach ($value['replies'] as $k => $v) {
             if (strripos($v['username'], $name) !== false) {
-           array_push($array, $v, $value['title']) ;
+           array_push($array, $v) ;
             }
         }
     }
