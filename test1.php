@@ -3,7 +3,7 @@
 $json = '[
 		{
 			"id":1,
-			"title":"a new title",
+			"title":"a new title1",
 			"category":"cate 1",
 			"author": {
 				"id":132,
@@ -191,7 +191,6 @@ $json = '[
 //参数为用户名称，返回他所有的评论
 $arr = [];
 $arr = json_decode($json, true);
-echo "<pre>";
 //foreach ($arr as $key=>$value) {
 //    foreach ($value['replies'] as $k=>$v) {
 //        var_dump($v['username']);
@@ -201,12 +200,14 @@ function get_user_replies($name,$arr) {
     $array =[];
     foreach ($arr as $key =>$value) {
         foreach ($value['replies'] as $k => $v) {
-            if ($name == $v['username']) {
-           array_push($array, $v['content']) ;
+            if (strripos($v['username'], $name) !== false) {
+           array_push($array, $v, $value['title']) ;
             }
         }
     }
     return $array;
 }
-$result = get_user_replies('Jason7',$arr);
+$result = get_user_replies($_GET['name'],$arr);
+$result = json_encode($result);
 print_r($result);
+//http://array.test/test1.php?name=Jason7

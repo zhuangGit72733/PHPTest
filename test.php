@@ -192,14 +192,16 @@ $json = '[
 //参数为作者名字，返回他的文章
 $arr = [];
 $arr = json_decode($json, true);
-echo "<pre>";
 function get_author_article($name,$arr)
 {
+    $array = [];
     foreach ($arr as $key => $value) {
-        if ($name ==$value['author']['name']) {
-            return $value;
+        if (strripos($value['author']['name'], $name) !== false) {
+          array_push($array, $value);
         }
     }
+    return $array;
 }
-$result = get_author_article('joe1235',$arr);
-var_dump($result);
+$result = get_author_article($_GET['name'],$arr);
+print_r($result);
+//http://array.test/test.php?name=joe
